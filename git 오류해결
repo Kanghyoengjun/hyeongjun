@@ -1,0 +1,7 @@
+sub git:(master) rm -rf .git
+.git 폴더를 삭제한 후 다시 add -> commit -> push를 했는데 여전히 폴더가 잠겨있었다.
+
+
+
+root git:(master) git rm --cached . -rf
+git rm --cached 명령어를 통해 원격 저장소에 있는 파일을 삭제한 후 add -> commit -> push 했더니 폴더가 열렸다.
