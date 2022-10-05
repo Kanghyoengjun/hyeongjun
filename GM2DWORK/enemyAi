@@ -1,0 +1,78 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class enemy : MonoBehaviour
+{
+    Animator ani;
+    Rigidbody2D rigid;
+    SpriteRenderer spr;
+    public int nextmove;
+    public float rand = Random.Range(1f, 4f);
+    void Start()
+    {
+        ani = GetComponent<Animator>();
+        rigid = GetComponent<Rigidbody2D>();
+        spr = GetComponent<SpriteRenderer>();   
+        Invoke("enemyAi", rand);
+    }
+
+    
+    void Update()
+    {
+        emove();
+        
+       
+    }
+
+    void emove()
+    {
+        //move
+        rigid.velocity = new Vector2(nextmove, rigid.velocity.y);
+
+        
+
+        //prevent fall
+        Vector2 frvec = new Vector2(rigid.position.x + nextmove*0.5f, rigid.position.y);
+        Debug.DrawRay(frvec, Vector3.down, new Color(1,1,0));
+        RaycastHit2D rayhit = Physics2D.Raycast(frvec, Vector3.down, 1);
+        if (rayhit.collider.tag == null|| rayhit.collider.tag == "wall")
+            turn();
+      
+    }
+
+    void enemyAi()
+    {
+        nextmove = Random.Range(-2, 3);
+
+        //Animation
+        ani.SetInteger("WalkSpeed", nextmove);
+
+        //Flip
+        if(nextmove != 0)
+        {
+           if (nextmove > 0)
+                spr.flipX = true;
+           else if (nextmove < 0)
+                spr.flipX = false;
+        }
+
+        //Recursive
+        rand = Random.Range(2f, 4f);
+        Invoke("enemyAi", rand);
+    }
+    void turn()
+    {
+        nextmove *= -1;
+        if (nextmove != 0)
+        {
+            if (nextmove > 0)
+                spr.flipX = true;
+            else if (nextmove < 0)
+                spr.flipX = false;
+        }
+
+        CancelInvoke();
+        Invoke("enemyAi", 2);
+    }
+}
