@@ -1,0 +1,14 @@
+Input.GetKey, GetKeyDown, GetKeyUp(KeyCode.Space)
+
+Awake,Start - 스크립트가 처음 실행될때 한번만 실행
+OnEnable, OnDisable  - 오브젝트가 활성화,비활성화 될때 실행
+FixedUpdate - 기기의 성능과 상관없이 고정된 프레임으로 실행
+Update - 기기의 성능에 따라 빠르게 실행
+LateUpdate - 마지막으로 실행 (속도는 Update와 동일)
+OnDestroy - 오브젝트가 파괴될때 실행
+
+이동, 공격, 오브젝트이동'회전, 크기 커졌다 작아졌다, material 로 색넣기
+
+
+
+**베르 vector 부터 이어보기
