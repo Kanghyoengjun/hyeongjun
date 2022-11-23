@@ -12,3 +12,15 @@ OnDestroy - 오브젝트가 파괴될때 실행
 
 
 **베르 vector 부터 이어보기
+Vector3 v1 = new Vector3(1f,2f);
+float scala = 4;
+Debug.Log((v1 * scala));
+v1.normalized - 단위벡터
+v1.magnitude - 벡터의 길이
+
+amnimation, animator 
+클립생성, locate
+
+prefab
+
+***스크린스페이스와 월드스페이스 중간부터보기
