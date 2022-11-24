@@ -24,3 +24,32 @@ amnimation, animator
 prefab
 
 ***스크린스페이스와 월드스페이스 중간부터보기
+
+★응박준 왈 인터페이스를 사용하라
+
+UI - image 생성,위치조정(플레이어 머리위에 체력바붙이기)
+transform.position = Camera.main.WorldToScreenPoint(worldobj.transform.position + new Vector3(0,0.7f,0));
+
+component에서 animator추가, create animation controller 해서 animator 에 넣어주기
+animator 변수 = int,float,bool,trigger
+trigger는 조건을 만족하면 한번실행되고끝남
+float는 부동소수점문제(컴퓨터는바보라 소수계산을못함) 때문에 크다,작다 밖에 조건을 못줌
+
+public Animator anim;
+
+void Awake()
+ anim= GetComponent<Animator>();
+ 
+ animator의 변수를 설정 = anim.Set변수형("변수이름", 값);
+
+if(Input.GetKeyDown(KeyCode.F))
+        {
+             anim.SetFloat("cubefloat", 3.1f);
+        }
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            anim.SetFloat("cubefloat", 2.9f);
+        }
+        
+animation만드는건 나중에해보자 지금은 모르겠다
+animation 있는 어셋 다운받기
