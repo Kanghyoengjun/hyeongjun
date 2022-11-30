@@ -52,4 +52,17 @@ if(Input.GetKeyDown(KeyCode.F))
         }
         
 animation만드는건 나중에해보자 지금은 모르겠다
-animation 있는 어셋 다운받기
+animation 있는 어셋 다운받기 ( 베르꺼로)
+
+
+---Find 사용법---
+Find("찾고자하는 오브젝트 이름")	                오브젝트 이름을 이용해서 찾는 방법
+FindObjectOfType<"찾고자하는 스크립트 이름">()  	스크립트 이름을 이용해서 찾는 방법
+FindGameObjectWithTag("찾고자하는 태그 이름")   	태그를 이용해서 찾는 방법
+
+prefab,
+
+--해결안된것(11.30)
+no
+
+
