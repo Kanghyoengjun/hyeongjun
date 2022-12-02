@@ -1,0 +1,141 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class player : MonoBehaviour
+{
+    // Start is called before the first frame update
+    [SerializeField]    // Animator 같은 프로퍼티들을 코드가아니라 유니티에서 가져올때 사용함
+    Animator anim;
+
+    Rigidbody rigid;
+    Collider col;
+    public GameObject pAttaack;
+
+    bool isattack;
+    public float damage = 10f;
+
+    bool ismove;
+    float moveX;
+    float moveZ;
+    public float speed = 0.1f;
+
+    public float jumpP = 30;
+    public bool isjump = false;
+
+
+    bool attackD;
+    bool jumpD;
+    bool plrun;
+    // Start is called before the first frame update
+    void Start()
+    {
+        rigid = GetComponent<Rigidbody>();
+        // anim = GetComponent<Animator>();
+        col = GetComponent<Collider>();
+        pAttaack.GetComponent<pAttack>();
+    }
+    void KeyInput()
+    {
+        attackD = Input.GetButtonDown("Fire1");
+        jumpD = Input.GetButtonDown("Jump");
+        moveX = Input.GetAxis("Horizontal");
+        moveZ = Input.GetAxis("Vertical");
+        plrun = Input.GetButton("run");
+    }
+
+    void Update()
+    {
+        KeyInput();
+        pAttack();
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        
+        pmove();
+        pjump();
+        pray();
+        pjump();
+    }
+
+    public void pAttack()
+    {
+        if (attackD)
+        {
+            anim.SetTrigger("doAttack");
+            StartCoroutine(weapon());         
+            // enemy 스크립트 찾기
+            var enm = FindObjectOfType<enemy>();
+            if (Attack(enm))
+            {         
+                Destroy(enm.gameObject);
+                Debug.Log("적 처치!");
+            }
+            else
+            {
+                Debug.Log("적 생존!" + enm.hp);
+            }
+        }
+    }
+    IEnumerator weapon()
+    {
+        pAttaack.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.8f);
+        pAttaack.gameObject.SetActive(false);
+    }
+    public bool Attack(enemy enemy)
+    {
+        enemy.hp -= damage;
+        return enemy.hp <= 0;
+    }
+    public void pmove()
+    {    
+        Vector3 moveVec = new Vector3(moveX, 0f, moveZ);
+        ismove = moveVec.magnitude > 0;
+        anim.SetBool("isMove", ismove);
+        if (ismove || plrun)
+        {
+            anim.transform.forward = moveVec;
+        }
+        if (plrun)
+        {
+            anim.SetBool("isRun", plrun);
+            if (speed < 0.2f)
+            {
+                speed *= 2;
+            }
+        }
+        else
+        {
+            anim.SetBool("isRun", false);
+            speed = 0.1f;
+        }
+        //transform.Translate(new Vector3(moveX, 0, moveZ) * Time.deltaTime);
+        transform.Translate(new Vector3(moveX, 0f, moveZ).normalized * speed);
+    }
+
+    public void pjump()
+    {
+        if (jumpD && isjump == false)
+        {
+            isjump = true;
+            rigid.AddForce(Vector3.up * jumpP, ForceMode.Impulse);
+        }
+    }
+
+    public void pray()
+    {
+        Debug.DrawRay(rigid.position, transform.up * 0.5f, new Color(250, 0, 0));
+        if (Physics.Raycast(transform.position, transform.up * -1, 0.5f, LayerMask.GetMask("floor")))
+        {
+            if (rigid.velocity.y <= 0)
+                isjump = false;
+        }
+        if (Physics.Raycast(transform.position, transform.forward, 2.5f, LayerMask.GetMask("items")))
+        {
+
+        }
+    }
+}
