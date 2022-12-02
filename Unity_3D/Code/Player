@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class player : MonoBehaviour
@@ -12,18 +13,24 @@ public class player : MonoBehaviour
     Collider col;
     public GameObject pAttaack;
 
-    bool isattack;
+    //공격,데미지
+    public bool isattack = false;
     public float damage = 10f;
+    public float atkdelay = 1f;
 
+    //타이머
+    public float timer = 0f;
+   
+
+    //이동,점프
     bool ismove;
     float moveX;
     float moveZ;
     public float speed = 0.1f;
-
     public float jumpP = 30;
     public bool isjump = false;
 
-
+    //키입력
     bool attackD;
     bool jumpD;
     bool plrun;
@@ -48,6 +55,7 @@ public class player : MonoBehaviour
     {
         KeyInput();
         pAttack();
+        timer += Time.deltaTime;
     }
 
     // Update is called once per frame
@@ -57,32 +65,41 @@ public class player : MonoBehaviour
         pmove();
         pjump();
         pray();
-        pjump();
     }
 
     public void pAttack()
     {
-        if (attackD)
+       StartCoroutine(pAtck());    
+    }
+    IEnumerator pAtck()
+    {
+        if (attackD && !isattack)
         {
+            isattack = true;
             anim.SetTrigger("doAttack");
-            StartCoroutine(weapon());         
+            StartCoroutine(weapon());
             // enemy 스크립트 찾기
             var enm = FindObjectOfType<enemy>();
             if (Attack(enm))
-            {         
+            {
                 Destroy(enm.gameObject);
-                Debug.Log("적 처치!");
+                Debug.Log("적 처치");
             }
             else
             {
-                Debug.Log("적 생존!" + enm.hp);
+                Debug.Log("적 HP:" + enm.hp);
+            }
+            if (isattack)
+            {
+                yield return new WaitForSeconds(atkdelay);
+                isattack= false;
             }
         }
     }
     IEnumerator weapon()
     {
         pAttaack.gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(atkdelay);
         pAttaack.gameObject.SetActive(false);
     }
     public bool Attack(enemy enemy)
@@ -118,7 +135,7 @@ public class player : MonoBehaviour
 
     public void pjump()
     {
-        if (jumpD && isjump == false)
+        if (jumpD && !isjump)
         {
             isjump = true;
             rigid.AddForce(Vector3.up * jumpP, ForceMode.Impulse);
