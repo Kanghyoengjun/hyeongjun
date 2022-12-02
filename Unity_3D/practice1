@@ -73,3 +73,6 @@ no
   WaitForSecondsEndOfFrame
   WaitForSecondsFixedUpdate
 공격delay 구현
+---enemy 피격판정, weapon 구현하는중
+
+
