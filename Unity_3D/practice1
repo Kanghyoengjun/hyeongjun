@@ -66,3 +66,10 @@ prefab,
 no
 
 
+--12.3
+공격기능에서 공격할때만 무기오브젝트활성화
+코루틴
+  WaitForSecondsRealtime(time scale 의 영향을 받지않는 실제시간)(time scale 0.5f = 시간이 2배 느리게감)
+  WaitForSecondsEndOfFrame
+  WaitForSecondsFixedUpdate
+공격delay 구현
