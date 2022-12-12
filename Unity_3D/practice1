@@ -75,4 +75,6 @@ no
 공격delay 구현
 ---enemy 피격판정, weapon 구현하는중
 
-
+--12.12
+enemy 피격, destroy 해결
+다음에 할거 -> weapon 구현하자 ( 무기를 줍고 꺼냈다 넣었다 하기 )
